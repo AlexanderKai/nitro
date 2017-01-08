@@ -178,6 +178,7 @@
 
 % Extras
 -record(upload,         {?CTRL_BASE(element_upload), name, value}).
+-record(upload_file,         {?CTRL_BASE(element_upload_file), name, value}).
 
 % HTML5 template
 -record(template,		?DEFAULT_BASE).
