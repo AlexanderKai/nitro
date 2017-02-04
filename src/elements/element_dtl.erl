@@ -11,7 +11,7 @@ render_element(Record=#dtl{}) ->
 	L = [
 	case K == Var of
 		true -> {K,0};
-		false -> {K,1}
+		false -> {Var,1}
 	end
 	||
 	{K,V} <- Record#dtl.bindings,
