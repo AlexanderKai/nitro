@@ -11,7 +11,7 @@ render_element(Record=#dtl{}) ->
 	L = [
 	case lists:keyfind(Var, 1, Record#dtl.bindings) of
 		false -> Var;
-		true -> []
+		_ -> []
 	end
 	||
 	Var <- Variables
