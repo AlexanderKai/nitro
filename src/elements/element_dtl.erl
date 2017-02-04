@@ -5,6 +5,18 @@
 
 render_element(Record=#dtl{}) ->
 	M = list_to_atom(nitro:to_list(Record#dtl.file) ++ "_view"),
+	Variables = M:variables(),
+	L = [
+	case K == Var of
+		true -> {K,0};
+		false -> {K,1}
+	end
+	||
+	{K,V} <- Record#dtl.bindings,
+	Var <- Variables
+	],
+	erlang:display("DTL NITRO"),
+	erlang:display(L),
 	%File = case code:lib_dir(nitro:to_atom(Record#dtl.app)) of
 				%{error,bad_name} -> nitro:to_list(Record#dtl.app);
 				%A -> A end ++ "/" ++ nitro:to_list(Record#dtl.folder)
