@@ -6,6 +6,8 @@
 render_element(Record=#dtl{}) ->
 	M = list_to_atom(nitro:to_list(Record#dtl.file) ++ "_view"),
 	Variables = M:variables(),
+	erlang:display("Bindings"),
+	erlang:display(Record#dtl.bindings),
 	erlang:display("Variables"),
 	erlang:display(Variables),
 	L = [
