@@ -5,6 +5,7 @@
 
 render_element(Record=#dtl{}) ->
     M = list_to_atom(nitro:to_list(Record#dtl.file) ++ "_view"),
+	Variables = M:variables(),
     %File = case code:lib_dir(nitro:to_atom(Record#dtl.app)) of
                 %{error,bad_name} -> nitro:to_list(Record#dtl.app);
                 %A -> A end ++ "/" ++ nitro:to_list(Record#dtl.folder)
