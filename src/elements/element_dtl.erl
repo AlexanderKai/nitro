@@ -10,14 +10,16 @@ render_element(Record=#dtl{}) ->
 	%erlang:display(Record#dtl.bindings),
 	%erlang:display("Variables"),
 	%erlang:display(Variables),
-	L = [
+	L = lists:flatten([
 	case lists:keyfind(Var, 1, Record#dtl.bindings) of
 		false -> Var;
 		_ -> []
 	end
 	||
 	Var <- Variables, Var /= javascript, Var /= script
-	],
+	]),
+	erlang:display("L"),
+	erlang:display(L),
 	L2 = [
 	{Bind, lists:sublist(l:a2l(Bind), 6, 100)}
 	||
