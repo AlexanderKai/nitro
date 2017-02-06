@@ -41,7 +41,7 @@ render_element(Record=#dtl{}) ->
 	%{Bind,{CM, CF}} <- L3
 	%],
 	erlang:display("-------------"),
-	erlang:display(apply(login,test,[])),
+	erlang:display(nitro:render(apply(login,test,[]))),
 	erlang:display("-------------"),
 	%NewRecord = Record#dtl{bindings = Record#dtl.bindings ++ }
 	erlang:display([{Bind, nitro:render(apply(l:l2a(CM),l:l2a(CF),[]))} || {Bind, [{CM, CF}]} <- L3]),
