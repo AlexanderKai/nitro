@@ -25,17 +25,23 @@ render_element(Record=#dtl{}) ->
 	||
 	Bind <- L, lists:prefix("call_",l:a2l(Bind)) == true
 	],
+	erlang:display("L2"),
+	erlang:display(L2),
 	L3 = [
 	{Bind, lists:splitwith(fun(A) -> "_" == A end, Call)}
 	||
 	{Bind, Call} <- L2
 	],
+	erlang:display("L3"),
+	erlang:display(L3),
 	L4 =
 	[
 	{Bind,{CM, lists:sublist(CF,2,100)}}
 	||
 	{Bind,{CM, CF}} <- L3
 	],
+	erlang:display("L4"),
+	erlang:display(L4),
 	%NewRecord = Record#dtl{bindings = Record#dtl.bindings ++ }
 	erlang:display("DTL NITRO"),
 	erlang:display(L),
