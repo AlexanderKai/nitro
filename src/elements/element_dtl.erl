@@ -18,12 +18,23 @@ render_element(Record=#dtl{}) ->
 	||
 	Var <- Variables, Var /= javascript, Var /= script
 	],
-    [
-        lists:sublist(l:a2l(Bind), 6, 100)
-    ||
-    Bind <- L, lists:prefix("call_",l:a2l(Bind
-    )) == true
-    ]
+	L2 = [
+	{Bind, lists:sublist(l:a2l(Bind), 6, 100)}
+	||
+	Bind <- L, lists:prefix("call_",l:a2l(Bind)) == true
+	],
+	L3 = [
+	{Bind, lists:splitwith(fun(A) -> "_" == A end, Call)}
+	||
+	{Bind, Call} <- L2
+	],
+	L4 =
+	[
+	{Bind,{CM, lists:sublist(CF,2,100)}}
+	||
+	{Bind,{CM, CF}} <- L3
+	],
+	%NewRecord = Record#dtl{bindings = Record#dtl.bindings ++ }
 	erlang:display("DTL NITRO"),
 	erlang:display(L),
 	erlang:display(lists:flatten(L)),
@@ -32,6 +43,7 @@ render_element(Record=#dtl{}) ->
 				%A -> A end ++ "/" ++ nitro:to_list(Record#dtl.folder)
 			%++ "/" ++ nitro:to_list(Record#dtl.file) ++ "." ++ nitro:to_list(Record#dtl.ext),
 	{ok,R} = render(M, Record#dtl.js_escape, [{K,nitro:render(V)} || {K,V} <- Record#dtl.bindings] ++
+		[{Bind, apply(CM,CF,[])} || {Bind, {CM, CF}} < -} L4] ++
 		if Record#dtl.bind_script==true -> [{script,nitro:script()}]; true-> [] end),
 	R.
 
