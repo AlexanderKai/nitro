@@ -51,7 +51,7 @@ render_element(Record=#dtl{}) ->
 				%A -> A end ++ "/" ++ nitro:to_list(Record#dtl.folder)
 			%++ "/" ++ nitro:to_list(Record#dtl.file) ++ "." ++ nitro:to_list(Record#dtl.ext),
 	{ok,R} = render(M, Record#dtl.js_escape, [{K,nitro:render(V)} || {K,V} <- Record#dtl.bindings] ++
-		[{Bind, apply(l:l2a(CM),l:l2a(CF),[])} || {Bind, {CM, CF}} <- L3] ++
+		[{Bind, apply(l:l2a(CM),l:l2a(CF),[])} || {Bind, [{CM, CF}]} <- L3] ++
 		if Record#dtl.bind_script==true -> [{script,nitro:script()}]; true-> [] end),
 	R.
 
