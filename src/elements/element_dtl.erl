@@ -16,8 +16,14 @@ render_element(Record=#dtl{}) ->
 		_ -> []
 	end
 	||
-	Var <- Variables
+	Var <- Variables, Var /= javascript, Var /= script
 	],
+    [
+        lists:sublist(l:a2l(Bind), 6, 100)
+    ||
+    Bind <- L, lists:prefix("call_",l:a2l(Bind
+    )) == true
+    ]
 	erlang:display("DTL NITRO"),
 	erlang:display(L),
 	erlang:display(lists:flatten(L)),
