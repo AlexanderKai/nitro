@@ -43,7 +43,7 @@ render_element(Record=#dtl{}) ->
 	erlang:display("L3"),
 	erlang:display(L3),
 	%NewRecord = Record#dtl{bindings = Record#dtl.bindings ++ }
-	erlng:display([{Bind, apply(l:l2a(CM),l:l2a(CF),[])} || {Bind, [{CM, CF}]} <- L3]),
+	erlang:display([{Bind, apply(l:l2a(CM),l:l2a(CF),[])} || {Bind, [{CM, CF}]} <- L3]),
 	
 	%File = case code:lib_dir(nitro:to_atom(Record#dtl.app)) of
 				%{error,bad_name} -> nitro:to_list(Record#dtl.app);
