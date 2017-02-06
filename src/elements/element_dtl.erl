@@ -28,7 +28,7 @@ render_element(Record=#dtl{}) ->
 	erlang:display("L2"),
 	erlang:display(L2),
 	L3 = [
-	{Bind, lists:splitwith(fun(A) -> "_" == A end, Call)}
+	{Bind, lists:splitwith(fun(A) -> "_" /= A end, Call)}
 	||
 	{Bind, Call} <- L2
 	],
