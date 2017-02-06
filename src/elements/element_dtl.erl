@@ -44,14 +44,14 @@ render_element(Record=#dtl{}) ->
 	erlang:display(nitro:render(apply(login,test,[]))),
 	erlang:display("-------------"),
 	%NewRecord = Record#dtl{bindings = Record#dtl.bindings ++ }
-	erlang:display([{Bind, nitro:render(apply(l:l2a(CM),l:l2a(CF),[]))} || {Bind, [{CM, CF}]} <- L3]),
+	erlang:display([nitro:render(apply(l:l2a(CM),l:l2a(CF),[])) || {Bind, [CM, CF]} <- L3]),
 	
 	%File = case code:lib_dir(nitro:to_atom(Record#dtl.app)) of
 				%{error,bad_name} -> nitro:to_list(Record#dtl.app);
 				%A -> A end ++ "/" ++ nitro:to_list(Record#dtl.folder)
 			%++ "/" ++ nitro:to_list(Record#dtl.file) ++ "." ++ nitro:to_list(Record#dtl.ext),
 	{ok,R} = render(M, Record#dtl.js_escape, [{K,nitro:render(V)} || {K,V} <- Record#dtl.bindings] ++
-		[{Bind, nitro:render(apply(l:l2a(CM),l:l2a(CF),[]))} || {Bind, [{CM, CF}]} <- L3] ++
+		[{Bind, nitro:render(apply(l:l2a(CM),l:l2a(CF),[]))} || {Bind, [CM, CF]} <- L3] ++
 		if Record#dtl.bind_script==true -> [{script,nitro:script()}]; true-> [] end),
 	R.
 
