@@ -28,20 +28,20 @@ render_element(Record=#dtl{}) ->
 	erlang:display("L2"),
 	erlang:display(L2),
 	L3 = [
-	{Bind, lists:splitwith(fun(A) -> "_" /= A end, Call)}
+	{Bind, string:tokens(Call, "_")}
 	||
 	{Bind, Call} <- L2
 	],
 	erlang:display("L3"),
 	erlang:display(L3),
-	L4 =
-	[
-	{Bind,{CM, lists:sublist(CF,2,100)}}
-	||
-	{Bind,{CM, CF}} <- L3
-	],
-	erlang:display("L4"),
-	erlang:display(L4),
+	%L4 =
+	%[
+	%{Bind,{CM, lists:sublist(CF,2,100)}}
+	%||
+	%{Bind,{CM, CF}} <- L3
+	%],
+	erlang:display("L3"),
+	erlang:display(L3),
 	%NewRecord = Record#dtl{bindings = Record#dtl.bindings ++ }
 	erlang:display("DTL NITRO"),
 	erlang:display(L),
@@ -51,7 +51,7 @@ render_element(Record=#dtl{}) ->
 				%A -> A end ++ "/" ++ nitro:to_list(Record#dtl.folder)
 			%++ "/" ++ nitro:to_list(Record#dtl.file) ++ "." ++ nitro:to_list(Record#dtl.ext),
 	{ok,R} = render(M, Record#dtl.js_escape, [{K,nitro:render(V)} || {K,V} <- Record#dtl.bindings] ++
-		[{Bind, apply(CM,CF,[])} || {Bind, {CM, CF}} <- L4] ++
+		[{Bind, apply(l:l2a(CM),l:l2a(CF),[])} || {Bind, {CM, CF}} <- L4] ++
 		if Record#dtl.bind_script==true -> [{script,nitro:script()}]; true-> [] end),
 	R.
 
