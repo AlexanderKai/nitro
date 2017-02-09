@@ -3,7 +3,7 @@
 -include("nitro.hrl").
 -compile(export_all).
 
-render_element(Record=#dtl{}) ->
+render_element(Record) ->
 	M = list_to_atom(nitro:to_list(Record#dtl.file) ++ "_view"),
 	Variables = M:variables(),
 	
@@ -35,7 +35,24 @@ render_element(Record=#dtl{}) ->
 	{ok,R} = render(M, Record#dtl.js_escape, [{K,nitro:render(V)} || {K,V} <- Record#dtl.bindings] ++
 		[{Bind, nitro:render(apply(l:l2a(CM),l:l2a(CF),[]))} || {Bind, [CM, CF]} <- L3] ++
 		if Record#dtl.bind_script==true -> [{script,nitro:script()}]; true-> [] end),
+
+    case Record#dtl.events of
+        [] -> [];
+        Ev -> render_events(Ev)
+    end,
+	%lists:flatten(R).
 	R.
+
+render_events(Events) ->
+    render_event(Events).
+
+render_event([H|T]) ->
+    nitro:wire(H),
+    render_event(T);
+
+render_event(H)->
+	nitro:wire(H),
+	true.
 
 render(M, true, Args) ->
 	{ok, R} = M:render(Args),
