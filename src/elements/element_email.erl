@@ -4,6 +4,7 @@
 -compile(export_all).
 
 render_element(Record) ->
+	erlang:display(record_info(fields, dtl)),
     Id = case Record#email.postback of
         undefined -> Record#email.id;
         Postback ->

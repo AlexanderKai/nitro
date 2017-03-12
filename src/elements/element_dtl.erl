@@ -3,7 +3,7 @@
 -include("nitro.hrl").
 -compile(export_all).
 
-render_element(Record=#dtl{}) ->
+render_element(Record) ->
 	M = list_to_atom(nitro:to_list(Record#dtl.file) ++ "_view"),
 	Variables = M:variables(),
 	
@@ -27,18 +27,21 @@ render_element(Record=#dtl{}) ->
 	||
 	{Bind, Call} <- L2
 	],
-	
+	ListCalls=[{Bind, apply(l:l2a(CM),l:l2a(CF),[])} || {Bind, [CM, CF]} <- L3],
 	%File = case code:lib_dir(nitro:to_atom(Record#dtl.app)) of
 				%{error,bad_name} -> nitro:to_list(Record#dtl.app);
 				%A -> A end ++ "/" ++ nitro:to_list(Record#dtl.folder)
 			%++ "/" ++ nitro:to_list(Record#dtl.file) ++ "." ++ nitro:to_list(Record#dtl.ext),
 	{ok,R} = render(M, Record#dtl.js_escape, [{K,nitro:render(V)} || {K,V} <- Record#dtl.bindings] ++
-		[{Bind, nitro:render(apply(l:l2a(CM),l:l2a(CF),[]))} || {Bind, [CM, CF]} <- L3] ++
+		[{Bind, nitro:render(RenderCall)} || {Bind, [RenderCall,_EventCall]} <-ListCalls] ++
 		if Record#dtl.bind_script==true -> [{script,nitro:script()}]; true-> [] end),
+
     case Record#dtl.events of
         [] -> [];
         Ev -> render_events(Ev)
     end,
+	render_events([EventCall || {_Bind,[_RendCall,EventCall]} <- ListCalls]),
+	%lists:flatten(R).
 	R.
 
 render_events(Events) ->
@@ -46,7 +49,11 @@ render_events(Events) ->
 
 render_event([H|T]) ->
     nitro:wire(H),
-    render_event(T).
+    render_event(T);
+
+render_event(Last)->
+	nitro:wire(Last),
+	true.
 
 render(M, true, Args) ->
 	{ok, R} = M:render(Args),
